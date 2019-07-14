@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Origin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.jun.avoidddongo.MainActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/L1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/Linear3"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="11dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            ads:layout_constraintLeft_toLeftOf="parent"
+            ads:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            >
+
+            <ImageView
+                android:id="@+id/imageView317"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                ads:srcCompat="@drawable/boost" />
+
+            <TextView
+                android:id="@+id/textView320"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.05"
+                android:paddingLeft="2dp"
+                android:paddingTop="13dp"
+                android:text="X"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/boostText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.12"
+                android:paddingTop="5dp"
+                android:text="100"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Linear4"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            ads:layout_constraintLeft_toLeftOf="parent"
+            ads:layout_constraintTop_toBottomOf="@+id/Linear3"
+            app:layout_constraintHorizontal_bias="0.035"
+            >
+
+            <ImageView
+                android:id="@+id/imageView417"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                ads:srcCompat="@drawable/mj" />
+
+            <TextView
+                android:id="@+id/textView420"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.05"
+                android:paddingLeft="2dp"
+                android:paddingTop="13dp"
+                android:text="X"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/mujukText"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:paddingTop="5dp"
+                android:text="100"
+                android:textSize="30sp"
+                tools:layout_editor_absoluteX="57dp"
+                tools:layout_editor_absoluteY="8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Linear2"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            ads:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_bias="0.035"
+            app:layout_constraintTop_toBottomOf="@+id/Linear4">
+
+            <ImageView
+                android:id="@+id/imageView217"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                ads:srcCompat="@drawable/jm" />
+
+            <TextView
+                android:id="@+id/textView220"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="2dp"
+                android:paddingTop="13dp"
+                android:text="X"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/jmText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.12"
+                android:paddingTop="5dp"
+                android:text="100"
+                android:textSize="30sp" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ddong" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="made by GJH~"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:text="똥피하기"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="똥피하기"
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ㅗ"
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="665dp" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="서버 선택"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"></com.google.android.gms.ads.AdView>
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="or     ip주소 직접입력"
+        android:inputType="textPersonName"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.458" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="344dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/adView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="게임시작" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/button3"
+            android:layout_toRightOf="@+id/button3"
+            android:text="나가기" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/button1"
+            android:layout_toRightOf="@+id/button1"
+            android:text="랭킹" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/button2"
+            android:layout_toRightOf="@+id/button2"
+            android:text="상점" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/Linear1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="11dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/title">
+
+        <ImageView
+            android:id="@+id/imageView17"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            ads:srcCompat="@drawable/coin" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.05"
+            android:paddingLeft="2dp"
+            android:paddingTop="13dp"
+            android:text="X"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/coinText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.12"
+            android:paddingLeft="6dp"
+            android:paddingTop="5dp"
+            android:text="100"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ㅇ"
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="700dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="291dp"
+        android:text="Button"
+        android:visibility="visible"
+        ads:layout_constraintRight_toLeftOf="@+id/L1"
+        ads:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="173dp"
+        android:text="Button"
+        android:visibility="visible"
+        ads:layout_constraintHorizontal_bias="1.0"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toLeftOf="@+id/L1"
+        ads:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="231dp"
+        android:text="Button"
+        android:visibility="visible"
+        ads:layout_constraintRight_toLeftOf="@+id/L1"
+        ads:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:text="광고보고 아이템 각각 10개씩 받기"
+        android:textColor="#FF0000"
+        ads:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        ads:srcCompat="@drawable/ddong"
+        ads:layout_constraintRight_toLeftOf="@+id/Linear1"
+        android:layout_marginRight="115dp"
+        ads:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="278dp" />
+
+    <ImageView
+        android:id="@+id/imageView25"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="-30dp"
+        android:layout_marginTop="124dp"
+        ads:layout_constraintRight_toLeftOf="@+id/Linear1"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:srcCompat="@drawable/ddong" />
+
+    <ImageView
+        android:id="@+id/imageView26"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginTop="41dp"
+        ads:layout_constraintRight_toLeftOf="@+id/Linear1"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:srcCompat="@drawable/ddong" />
+
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        ads:srcCompat="@drawable/ddong"
+        android:layout_marginTop="88dp"
+        ads:layout_constraintTop_toBottomOf="@+id/Linear1"
+        ads:layout_constraintLeft_toRightOf="@+id/L1"
+        android:layout_marginLeft="17dp" />
+
+    <ImageView
+        android:id="@+id/imageView24"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="32dp"
+        ads:layout_constraintRight_toLeftOf="@+id/Linear1"
+        ads:srcCompat="@drawable/ddong"
+        android:layout_marginBottom="131dp"
+        ads:layout_constraintBottom_toBottomOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="274dp"
+        android:layout_height="103dp"
+        android:layout_marginLeft="40dp"
+        android:elevation="1dp"
+        android:orientation="vertical"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="-13dp">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="서버1"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="서버2"
+            android:visibility="gone" />
+
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/imageView27"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        ads:srcCompat="@drawable/ddong"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="149dp"
+        ads:layout_constraintLeft_toRightOf="@+id/imageView24"
+        android:layout_marginLeft="40dp" />
+
+    <ImageView
+        android:id="@+id/imageView28"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        ads:srcCompat="@drawable/ddong"
+        ads:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="141dp"
+        ads:layout_constraintRight_toLeftOf="@+id/imageView26"
+        android:layout_marginRight="8dp" />
+
+</android.support.constraint.ConstraintLayout>
