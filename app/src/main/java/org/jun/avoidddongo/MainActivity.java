@@ -193,43 +193,6 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
                 finish();
             }
         });
-
-        b1 = (Button) findViewById(R.id.button8) ;
-        b2 = (Button) findViewById(R.id.button9) ;
-        b3 = (Button) findViewById(R.id.button6) ;
-
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-
-                editor.putInt("boost", 10);
-                editor.commit();
-            }
-        });
-
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-
-                editor.putInt("mujuk", 10);
-                editor.commit();
-            }
-        });
-
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-
-                editor.putInt("jm", 10);
-                editor.commit();
-            }
-        });
     }
 
     @Override
