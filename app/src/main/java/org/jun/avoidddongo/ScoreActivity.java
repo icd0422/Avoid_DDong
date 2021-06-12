@@ -14,12 +14,22 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,9 +40,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -40,13 +53,13 @@ public class ScoreActivity extends AppCompatActivity {
     TextView rankoneText;
     TextView ranktwoText;
     TextView rankthreeText;
-    TextView rankfourText ;
-    TextView rankfiveText ;
-    TextView ranksixText ;
-    TextView ranksevenText ;
-    TextView rankeightText ;
-    TextView ranknineText ;
-    TextView ranktenText ;
+    TextView rankfourText;
+    TextView rankfiveText;
+    TextView ranksixText;
+    TextView ranksevenText;
+    TextView rankeightText;
+    TextView ranknineText;
+    TextView ranktenText;
     String rankString[];
     rankHandler rank_Handler;
     EditText nameEdit;
@@ -56,10 +69,10 @@ public class ScoreActivity extends AppCompatActivity {
     String ipAdress;
     String t = "0";
     int maxscore = 9999999;
-    TextView rankText[] ;
-    TextView top ;
-    TextView bottom ;
-    TextView moneyTextView ;
+    TextView rankText[];
+    TextView top;
+    TextView bottom;
+    TextView moneyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +86,17 @@ public class ScoreActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        moneyTextView = (TextView)findViewById(R.id.moneyTextView) ;
+        moneyTextView = (TextView) findViewById(R.id.moneyTextView);
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        top = (TextView)findViewById(R.id.top) ;
-        bottom = (TextView)findViewById(R.id.bottom) ;
+        top = (TextView) findViewById(R.id.top);
+        bottom = (TextView) findViewById(R.id.bottom);
 
         scoreText = (TextView) findViewById(R.id.textView);
 
-        rankText = new TextView[10] ;
+        rankText = new TextView[10];
         rankText[0] = (TextView) findViewById(R.id.textView1);
         rankText[1] = (TextView) findViewById(R.id.textView2);
         rankText[2] = (TextView) findViewById(R.id.textView3);
@@ -105,23 +118,28 @@ public class ScoreActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         scoreText.setText(intent.getStringExtra("score"));
-        moneyTextView.setText("획득돈 : "+intent.getStringExtra("money"));
+        moneyTextView.setText("획득돈 : " + intent.getStringExtra("money"));
 
         SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
-        editor.putInt("money",  pref.getInt("money",0) + Integer.parseInt(moneyTextView.getText().toString().split(" ")[2]));
+        editor.putInt("money", pref.getInt("money", 0) + Integer.parseInt(moneyTextView.getText().toString().split(" ")[2]));
         editor.commit();
 
         ipAdress = intent.getStringExtra("ipAdress");
 
         //rankThread rank_Thread = new rankThread();
-       //rank_Thread.start();
+        //rank_Thread.start();
 
         //linkCheck lc = new linkCheck();
         //lc.execute();
 
-        new BackgroundTask().execute() ;//순위데이터베이스 불러오기
+        //new BackgroundTask().execute();//순위데이터베이스 불러오기
+
+        if (AppHelper.requestQueue == null)
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        showRanking();
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,83 +148,147 @@ public class ScoreActivity extends AppCompatActivity {
                 name = (nameEdit.getText().toString()).replace(" ", "");
                 score = scoreText.getText().toString();
 
-                rankString[10] = name + " " + score;
-
-                sort();
-
-                for(int i=0 ; i<10 ; i++)
-                {
-                    rankText[i].setText(i+1+"등 ");
+                try {
+                    registerRanking();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                rankText[0].setText((rankText[0].getText().toString())+" "+rankString[0]);
-                rankText[1].setText((rankText[1].getText().toString())+" "+rankString[1]);
-                rankText[2].setText((rankText[2].getText().toString())+" "+rankString[2]);
-                rankText[3].setText((rankText[3].getText().toString())+" "+rankString[3]);
-                rankText[4].setText((rankText[4].getText().toString())+" "+rankString[4]);
-                rankText[5].setText((rankText[5].getText().toString())+" "+rankString[5]);
-                rankText[6].setText((rankText[6].getText().toString())+" "+rankString[6]);
-                rankText[7].setText((rankText[7].getText().toString())+" "+rankString[7]);
-                rankText[8].setText((rankText[8].getText().toString())+" "+rankString[8]);
-                rankText[9].setText((rankText[9].getText().toString())+" "+rankString[9]);
-
-                new DeleteBackgroundTask().execute() ;//데이터 베이스 삭제
-
-
-                /*if (t.equals("0") == true)//서버가 꺼져있으면
-                {
-                    SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-
-                    editor.putString("rank1",rankString[0]) ;
-                    editor.commit();
-                    editor.putString("rank2",rankString[1]) ;
-                    editor.commit();
-                    editor.putString("rank3",rankString[2]) ;
-                    editor.commit();
-                }
-
-                else//서버가 켜져있으면
-                {
-                    confirmThread confirm_Thread = new confirmThread();
-                    confirm_Thread.start();
-                }*/
-
                 confirmBtn.setVisibility(View.GONE);
             }
         });
     }
 
-    class BackgroundTask extends AsyncTask<Void, Void, String>
-    {
-        String target ;
+    public void showRanking() {
+        String url = "http://13.124.106.103:8080/v1/avoidddong/ranks?page=0&size=10&sort=score,desc";
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        OffsetList rankingOffsetList = gson.fromJson(response, OffsetList.class);
+
+                        int i = 0;
+                        for (RankingDTO rankingDTO : rankingOffsetList.getResults()) {
+                            rankText[i].setText(i + 1 + "등 : " + rankingDTO.getName() + " / 점수 : " + rankingDTO.getScore() + " / 기록 일자 : " + rankingDTO.getCreatedAt());
+                            i++;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {////Post방식으로 파라미터를 전달해주고싶을 때
+                Map<String, String> params = new HashMap<String, String>();
+
+                return params;
+            }
+        };
+
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+    }
+
+    public void registerRanking() throws JSONException {
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("name", name);
+        jsonBody.put("score", score);
+        final String mRequestBody = jsonBody.toString();
+        String url = "http://13.124.106.103:8080/v1/avoidddong/ranks";
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        showRanking();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // As of f605da3 the following should work
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                // Now you can use any deserializer to make sense of data
+                                JSONObject obj = new JSONObject(res);
+                                VolleyLog.d("fds", obj.toString());
+                                Toast.makeText(ScoreActivity.this, obj.toString(), Toast.LENGTH_LONG).show();
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                            } catch (JSONException e2) {
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
+                    }
+                }
+        ) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                    return null;
+                }
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+
+
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+    }
+
+    class BackgroundTask extends AsyncTask<Void, Void, String> {
+        String target;
 
         @Override
         protected void onPreExecute() {
-            target = "http://icd0422.cafe24.com/mainRank.php" ;
+            target = "http://icd0422.cafe24.com/mainRank.php";
         }
 
         @Override
         protected String doInBackground(Void... voids) {
-            try
-            {
-                URL url = new URL(target) ;
+            try {
+                URL url = new URL(target);
                 HttpURLConnection httpURlConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURlConnection.getInputStream() ;
+                InputStream inputStream = httpURlConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp ;
-                StringBuilder stringBuilder = new StringBuilder() ;
-                while((temp = bufferedReader.readLine())!= null)
-                {
-                    stringBuilder.append(temp + "\n") ;
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
                 }
                 bufferedReader.close();
                 inputStream.close();
                 httpURlConnection.disconnect();
                 return stringBuilder.toString().trim();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -224,54 +306,47 @@ public class ScoreActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
-                int c = 0 ;
-                while(c<jsonArray.length())
-                {
-                    JSONObject object = jsonArray.getJSONObject(c) ;
-                    rankString[Integer.parseInt(object.getString("rank"))-1] = object.getString("rankString") ;
+                int c = 0;
+                while (c < jsonArray.length()) {
+                    JSONObject object = jsonArray.getJSONObject(c);
+                    rankString[Integer.parseInt(object.getString("rank")) - 1] = object.getString("rankString");
                     c++;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            rankText[0].setText((rankText[0].getText().toString())+" "+rankString[0]);
-            rankText[1].setText((rankText[1].getText().toString())+" "+rankString[1]);
-            rankText[2].setText((rankText[2].getText().toString())+" "+rankString[2]);
-            rankText[3].setText((rankText[3].getText().toString())+" "+rankString[3]);
-            rankText[4].setText((rankText[4].getText().toString())+" "+rankString[4]);
-            rankText[5].setText((rankText[5].getText().toString())+" "+rankString[5]);
-            rankText[6].setText((rankText[6].getText().toString())+" "+rankString[6]);
-            rankText[7].setText((rankText[7].getText().toString())+" "+rankString[7]);
-            rankText[8].setText((rankText[8].getText().toString())+" "+rankString[8]);
-            rankText[9].setText((rankText[9].getText().toString())+" "+rankString[9]);
+            rankText[0].setText((rankText[0].getText().toString()) + " " + rankString[0]);
+            rankText[1].setText((rankText[1].getText().toString()) + " " + rankString[1]);
+            rankText[2].setText((rankText[2].getText().toString()) + " " + rankString[2]);
+            rankText[3].setText((rankText[3].getText().toString()) + " " + rankString[3]);
+            rankText[4].setText((rankText[4].getText().toString()) + " " + rankString[4]);
+            rankText[5].setText((rankText[5].getText().toString()) + " " + rankString[5]);
+            rankText[6].setText((rankText[6].getText().toString()) + " " + rankString[6]);
+            rankText[7].setText((rankText[7].getText().toString()) + " " + rankString[7]);
+            rankText[8].setText((rankText[8].getText().toString()) + " " + rankString[8]);
+            rankText[9].setText((rankText[9].getText().toString()) + " " + rankString[9]);
 
         }
     }
 
-    class DeleteBackgroundTask extends AsyncTask
-    {
-        String target ;
+    class DeleteBackgroundTask extends AsyncTask {
+        String target;
 
         @Override
         protected void onPreExecute() {
-            target = "http://icd0422.cafe24.com/delete.php" ;
+            target = "http://icd0422.cafe24.com/delete.php";
         }
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            try
-            {
-                URL url = new URL(target) ;
+            try {
+                URL url = new URL(target);
                 HttpURLConnection httpURlConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURlConnection.getInputStream() ;
+                InputStream inputStream = httpURlConnection.getInputStream();
                 inputStream.close();
                 httpURlConnection.disconnect();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -284,33 +359,26 @@ public class ScoreActivity extends AppCompatActivity {
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    try
-                    {
-                        JSONObject jsonResponse =  new JSONObject(response) ;
-                        boolean success = jsonResponse.getBoolean("success") ;
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
 
-                        if(success) {
+                        if (success) {
                             //Toast.makeText(ScoreActivity.this,"성공",Toast.LENGTH_SHORT).show();
-                        }
-
-                        else
-                        {
+                        } else {
                             //Toast.makeText(ScoreActivity.this,"실패",Toast.LENGTH_SHORT).show();
                         }
-                    }
-
-                    catch (JSONException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             };
 
             RequestQueue queue = Volley.newRequestQueue(ScoreActivity.this);
-            for(int i=0 ; i<10 ; i++)
-            {
-                InsertRequest insertRequest = new InsertRequest(Integer.toString(i+1),rankString[i],responseListener) ;
+            for (int i = 0; i < 10; i++) {
+                InsertRequest insertRequest = new InsertRequest(Integer.toString(i + 1), rankString[i], responseListener);
 
-                queue.add(insertRequest) ;
+                queue.add(insertRequest);
             }
         }
     }
@@ -374,22 +442,20 @@ public class ScoreActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            rankText[0].setText((rankText[0].getText().toString())+" "+rankString[0]);
-            rankText[1].setText((rankText[1].getText().toString())+" "+rankString[1]);
-            rankText[2].setText((rankText[2].getText().toString())+" "+rankString[2]);
-            rankText[3].setText((rankText[3].getText().toString())+" "+rankString[3]);
-            rankText[4].setText((rankText[4].getText().toString())+" "+rankString[4]);
-            rankText[5].setText((rankText[5].getText().toString())+" "+rankString[5]);
-            rankText[6].setText((rankText[6].getText().toString())+" "+rankString[6]);
-            rankText[7].setText((rankText[7].getText().toString())+" "+rankString[7]);
-            rankText[8].setText((rankText[8].getText().toString())+" "+rankString[8]);
-            rankText[9].setText((rankText[9].getText().toString())+" "+rankString[9]);
+            rankText[0].setText((rankText[0].getText().toString()) + " " + rankString[0]);
+            rankText[1].setText((rankText[1].getText().toString()) + " " + rankString[1]);
+            rankText[2].setText((rankText[2].getText().toString()) + " " + rankString[2]);
+            rankText[3].setText((rankText[3].getText().toString()) + " " + rankString[3]);
+            rankText[4].setText((rankText[4].getText().toString()) + " " + rankString[4]);
+            rankText[5].setText((rankText[5].getText().toString()) + " " + rankString[5]);
+            rankText[6].setText((rankText[6].getText().toString()) + " " + rankString[6]);
+            rankText[7].setText((rankText[7].getText().toString()) + " " + rankString[7]);
+            rankText[8].setText((rankText[8].getText().toString()) + " " + rankString[8]);
+            rankText[9].setText((rankText[9].getText().toString()) + " " + rankString[9]);
         }
     }
 
-    public void sort()
-
-    {
+    public void sort() {
         String name[] = new String[11];
         for (int i = 0; i < 11; i++) {
             name[i] = rankString[i].split(" ")[0];
@@ -443,9 +509,7 @@ public class ScoreActivity extends AppCompatActivity {
                 Thread.sleep(300);
                 publishProgress();
             } catch (
-                    Exception e)
-
-            {
+                    Exception e) {
                 e.printStackTrace();
             }
 

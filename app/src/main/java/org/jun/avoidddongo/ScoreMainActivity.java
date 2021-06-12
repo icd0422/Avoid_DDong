@@ -7,6 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,6 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScoreMainActivity extends AppCompatActivity {
 
@@ -55,8 +65,49 @@ public class ScoreMainActivity extends AppCompatActivity {
             rankString[i] = " 0";
         }
 
-        new BackgroundTask().execute() ;//순위데이터베이스 불러오기
+        if (AppHelper.requestQueue == null)
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+        showRanking();
+        //new BackgroundTask().execute() ;//순위데이터베이스 불러오기
     }
+
+    public void showRanking() {
+        String url = "http://13.124.106.103:8080/v1/avoidddong/ranks?page=0&size=10&sort=score,desc";
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        OffsetList rankingOffsetList = gson.fromJson(response, OffsetList.class);
+
+                        int i = 0;
+                        for (RankingDTO rankingDTO : rankingOffsetList.getResults()) {
+                            rankText[i].setText(i + 1 + "등 : " + rankingDTO.getName() + " / 점수 : " + rankingDTO.getScore() + " / 기록 일자 : " + rankingDTO.getCreatedAt());
+                            i++;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {////Post방식으로 파라미터를 전달해주고싶을 때
+                Map<String, String> params = new HashMap<String, String>();
+
+                return params;
+            }
+        };
+
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+    }
+
 
     class BackgroundTask extends AsyncTask<Void, Void, String>
     {

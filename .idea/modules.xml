@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AvoidDDong.iml" filepath="$PROJECT_DIR$/AvoidDDong.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Avoid_DDong.iml" filepath="$PROJECT_DIR$/.idea/modules/Avoid_DDong.iml" group="Avoid_DDong" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Avoid_DDong-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Avoid_DDong-app.iml" group="Avoid_DDong/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
