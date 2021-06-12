@@ -657,7 +657,7 @@ public class OnGameActivity extends AppCompatActivity {
 
     class fireBackground extends AsyncTask {
 
-        int time = score+300 ;
+        int time = score+30 ;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -816,7 +816,7 @@ public class OnGameActivity extends AppCompatActivity {
     }
 
     class mujukBackground extends AsyncTask {
-        int time = score + 300;
+        int time = score + 30;
 
         @Override
         protected void onPreExecute() {
