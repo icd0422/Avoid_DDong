@@ -145,7 +145,7 @@ public class ScoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                name = (nameEdit.getText().toString()).replace(" ", "");
+                name = (nameEdit.getText().toString());
                 score = scoreText.getText().toString();
 
                 try {

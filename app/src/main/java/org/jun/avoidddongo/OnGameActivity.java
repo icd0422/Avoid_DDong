@@ -423,7 +423,7 @@ public class OnGameActivity extends AppCompatActivity {
         @Override
         public void run() {
             scoreText.setText(Integer.toString(score));
-            if(score%5000==0&&score!=0) {
+            if(score%400==0&&score!=0) {
                 bb = 1;
 
                 for (int i = 1; i <= 10; i++) {
@@ -437,7 +437,7 @@ public class OnGameActivity extends AppCompatActivity {
                 if(high<=0) high=1 ;
                 //stageText.setText("Stage " + stage);
             }
-            else if(score%1000==0){
+            else if(score%50==0){
                     bb = 0;
                     stageText.setText("Stage " + stage);
             }
