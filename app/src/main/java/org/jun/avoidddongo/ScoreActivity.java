@@ -159,7 +159,7 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     public void showRanking() {
-        String url = "http://13.124.106.103:8080/v1/avoidddong/ranks?page=0&size=10&sort=score,desc";
+        String url = "http://13.124.97.131:8080/v1/avoidddong/ranks?page=0&size=10&sort=score,desc";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
@@ -200,7 +200,7 @@ public class ScoreActivity extends AppCompatActivity {
         jsonBody.put("name", name);
         jsonBody.put("score", score);
         final String mRequestBody = jsonBody.toString();
-        String url = "http://13.124.106.103:8080/v1/avoidddong/ranks";
+        String url = "http://13.124.97.131:8080/v1/avoidddong/ranks";
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 url,
